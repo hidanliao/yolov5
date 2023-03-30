@@ -45,9 +45,9 @@ class MainWindow(QTabWidget):
     def __init__(self):
         # 初始化界面
         super().__init__()
-        self.setWindowTitle('Target detection system')
+        self.setWindowTitle('ターゲット検出システム')
         self.resize(1200, 800)
-        self.setWindowIcon(QIcon("images/UI/lufei.png"))
+        self.setWindowIcon(QIcon("images/UI/ai.png"))
         # 图片读取进程
         self.output_size = 480
         self.img2predict = ""
@@ -57,7 +57,7 @@ class MainWindow(QTabWidget):
         self.stopEvent = threading.Event()
         self.webcam = True
         self.stopEvent.clear()
-        self.model = self.model_load(weights="pretrained/yolov5s.pt",
+        self.model = self.model_load(weights="pretrained/oring.pt",
                                      device=self.device)  # todo 指明模型加载的位置的设备
         self.initUI()
         self.reset_vid()
@@ -80,7 +80,7 @@ class MainWindow(QTabWidget):
         half &= pt and device.type != 'cpu'  # half precision only supported by PyTorch on CUDA
         if pt:
             model.model.half() if half else model.model.float()
-        print("模型加载完成!")
+        print("モデルのロード完了！")
         return model
 
     '''
@@ -88,27 +88,27 @@ class MainWindow(QTabWidget):
     '''
     def initUI(self):
         # 图片检测子界面
-        font_title = QFont('楷体', 16)
-        font_main = QFont('楷体', 14)
+        font_title = QFont('BIZ UDPゴシック', 16)
+        font_main = QFont('BIZ UDPゴシック', 14)
         # 图片识别界面, 两个按钮，上传图片和显示结果
         img_detection_widget = QWidget()
         img_detection_layout = QVBoxLayout()
-        img_detection_title = QLabel("图片识别功能")
+        img_detection_title = QLabel("画像認識機能")
         img_detection_title.setFont(font_title)
         mid_img_widget = QWidget()
         mid_img_layout = QHBoxLayout()
         self.left_img = QLabel()
         self.right_img = QLabel()
-        self.left_img.setPixmap(QPixmap("images/UI/up.jpeg"))
-        self.right_img.setPixmap(QPixmap("images/UI/right.jpeg"))
+        self.left_img.setPixmap(QPixmap("images/UI/upload.png"))
+        self.right_img.setPixmap(QPixmap("images/UI/right.png"))
         self.left_img.setAlignment(Qt.AlignCenter)
         self.right_img.setAlignment(Qt.AlignCenter)
         mid_img_layout.addWidget(self.left_img)
         mid_img_layout.addStretch(0)
         mid_img_layout.addWidget(self.right_img)
         mid_img_widget.setLayout(mid_img_layout)
-        up_img_button = QPushButton("上传图片")
-        det_img_button = QPushButton("开始检测")
+        up_img_button = QPushButton("画像をアップロード")
+        det_img_button = QPushButton("検出を開始")
         up_img_button.clicked.connect(self.upload_img)
         det_img_button.clicked.connect(self.detect_img)
         up_img_button.setFont(font_main)
@@ -137,15 +137,15 @@ class MainWindow(QTabWidget):
         # 视频识别界面的逻辑比较简单，基本就从上到下的逻辑
         vid_detection_widget = QWidget()
         vid_detection_layout = QVBoxLayout()
-        vid_title = QLabel("视频检测功能")
+        vid_title = QLabel("ビデオ検出機能")
         vid_title.setFont(font_title)
         self.vid_img = QLabel()
-        self.vid_img.setPixmap(QPixmap("images/UI/up.jpeg"))
+        self.vid_img.setPixmap(QPixmap("images/UI/upload.png"))
         vid_title.setAlignment(Qt.AlignCenter)
         self.vid_img.setAlignment(Qt.AlignCenter)
-        self.webcam_detection_btn = QPushButton("摄像头实时监测")
-        self.mp4_detection_btn = QPushButton("视频文件检测")
-        self.vid_stop_btn = QPushButton("停止检测")
+        self.webcam_detection_btn = QPushButton("カメラのリアルタイム監視")
+        self.mp4_detection_btn = QPushButton("ビデオファイルの検出")
+        self.vid_stop_btn = QPushButton("停止検出")
         self.webcam_detection_btn.setFont(font_main)
         self.mp4_detection_btn.setFont(font_main)
         self.vid_stop_btn.setFont(font_main)
@@ -184,17 +184,17 @@ class MainWindow(QTabWidget):
         # todo 关于界面
         about_widget = QWidget()
         about_layout = QVBoxLayout()
-        about_title = QLabel('欢迎使用目标检测系统\n\n 提供付费指导：有需要的好兄弟加下面的QQ即可')  # todo 修改欢迎词语
-        about_title.setFont(QFont('楷体', 18))
+        about_title = QLabel('物体検出システムへようこそ')  # todo 修改欢迎词语
+        about_title.setFont(QFont('BIZ UDPゴシック', 18))
         about_title.setAlignment(Qt.AlignCenter)
         about_img = QLabel()
-        about_img.setPixmap(QPixmap('images/UI/qq.png'))
+        about_img.setPixmap(QPixmap('images/UI/address.png'))
         about_img.setAlignment(Qt.AlignCenter)
 
         # label4.setText("<a href='https://oi.wiki/wiki/学习率的调整'>如何调整学习率</a>")
         label_super = QLabel()  # todo 更换作者信息
-        label_super.setText("<a href='https://blog.csdn.net/ECHOSON'>或者你可以在这里找到我-->肆十二</a>")
-        label_super.setFont(QFont('楷体', 16))
+        label_super.setText("<a href='https://www.j-amc.co.jp/'>公式ウェブサイト")
+        label_super.setFont(QFont('BIZ UDPゴシック', 16))
         label_super.setOpenExternalLinks(True)
         # label_super.setOpenExternalLinks(True)
         label_super.setAlignment(Qt.AlignRight)
@@ -206,12 +206,12 @@ class MainWindow(QTabWidget):
         about_widget.setLayout(about_layout)
 
         self.left_img.setAlignment(Qt.AlignCenter)
-        self.addTab(img_detection_widget, '图片检测')
-        self.addTab(vid_detection_widget, '视频检测')
-        self.addTab(about_widget, '联系我')
-        self.setTabIcon(0, QIcon('images/UI/lufei.png'))
-        self.setTabIcon(1, QIcon('images/UI/lufei.png'))
-        self.setTabIcon(2, QIcon('images/UI/lufei.png'))
+        self.addTab(img_detection_widget, '画像検出')
+        self.addTab(vid_detection_widget, 'ビデオ検出')
+        self.addTab(about_widget, 'お問い合わせ')
+        self.setTabIcon(0, QIcon('images/UI/picture.png'))
+        self.setTabIcon(1, QIcon('images/UI/photograph.png'))
+        self.setTabIcon(2, QIcon('images/UI/telephone.png'))
 
     '''
     ***上传图片***
@@ -262,7 +262,7 @@ class MainWindow(QTabWidget):
         dnn = False  # use OpenCV DNN for ONNX inference
         print(source)
         if source == "":
-            QMessageBox.warning(self, "请上传", "请先上传图片再进行检测")
+            QMessageBox.warning(self, "アップロードしてください", "検出する前に画像をアップロードしてください")
         else:
             source = str(source)
             device = select_device(self.device)
@@ -362,8 +362,8 @@ class MainWindow(QTabWidget):
     '''
     def closeEvent(self, event):
         reply = QMessageBox.question(self,
-                                     'quit',
-                                     "Are you sure?",
+                                     '終了',
+                                     "よろしいですか？",
                                      QMessageBox.Yes | QMessageBox.No,
                                      QMessageBox.No)
         if reply == QMessageBox.Yes:
@@ -541,7 +541,7 @@ class MainWindow(QTabWidget):
     def reset_vid(self):
         self.webcam_detection_btn.setEnabled(True)
         self.mp4_detection_btn.setEnabled(True)
-        self.vid_img.setPixmap(QPixmap("images/UI/up.jpeg"))
+        self.vid_img.setPixmap(QPixmap("images/UI/upload.jpeg"))
         self.vid_source = '0'
         self.webcam = True
 
