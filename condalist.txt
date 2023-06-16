@@ -301,4 +301,5 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 (py14) C:\Users\monod>conda list -e > condalist.txt
 
+Traffic-Sign-Recognition-PyQt5-YOLOv5-GUI
 (py14) C:\Users\monod>
